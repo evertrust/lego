@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/go-acme/lego/v4/acme"
+	"github.com/evertrust/lego/v4/acme"
 )
 
 // ErrNoARI is returned when the server does not advertise a renewal info endpoint.

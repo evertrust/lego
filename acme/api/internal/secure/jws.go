@@ -8,7 +8,7 @@ import (
 	"encoding/base64"
 	"fmt"
 
-	"github.com/go-acme/lego/v4/acme/api/internal/nonces"
+	"github.com/evertrust/lego/v4/acme/api/internal/nonces"
 	jose "github.com/go-jose/go-jose/v3"
 )
 
