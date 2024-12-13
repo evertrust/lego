@@ -191,5 +191,6 @@ func matchDomain(src, domain string) bool {
 		domain = "[" + domain + "]"
 	}
 
-	return strings.HasPrefix(src, domain)
+	// Compare case insensitive
+	return strings.HasPrefix(strings.ToLower(src), strings.ToLower(domain))
 }
