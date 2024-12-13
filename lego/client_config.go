@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-acme/lego/v4/certcrypto"
-	"github.com/go-acme/lego/v4/registration"
+	"github.com/evertrust/lego/v4/certcrypto"
+	"github.com/evertrust/lego/v4/registration"
 )
 
 const (

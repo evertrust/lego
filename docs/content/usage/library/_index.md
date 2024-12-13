@@ -27,12 +27,12 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/go-acme/lego/v4/certcrypto"
-	"github.com/go-acme/lego/v4/certificate"
-	"github.com/go-acme/lego/v4/challenge/http01"
-	"github.com/go-acme/lego/v4/challenge/tlsalpn01"
-	"github.com/go-acme/lego/v4/lego"
-	"github.com/go-acme/lego/v4/registration"
+	"github.com/evertrust/lego/v4/certcrypto"
+	"github.com/evertrust/lego/v4/certificate"
+	"github.com/evertrust/lego/v4/challenge/http01"
+	"github.com/evertrust/lego/v4/challenge/tlsalpn01"
+	"github.com/evertrust/lego/v4/lego"
+	"github.com/evertrust/lego/v4/registration"
 )
 
 // You'll need a user or account type that implements acme.User

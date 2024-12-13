@@ -1,8 +1,0 @@
-{
-  "status": "invalid_resource",
-  "errors": {
-    "name": [
-      "muss ausgefüllt werden"
-    ]
-  }
-}

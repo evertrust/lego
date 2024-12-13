@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-acme/lego/v4/acme"
-	"github.com/go-acme/lego/v4/acme/api/internal/sender"
-	"github.com/go-acme/lego/v4/platform/tester"
+	"github.com/evertrust/lego/v4/acme"
+	"github.com/evertrust/lego/v4/acme/api/internal/sender"
+	"github.com/evertrust/lego/v4/platform/tester"
 )
 
 func TestNotHoldingLockWhileMakingHTTPRequests(t *testing.T) {

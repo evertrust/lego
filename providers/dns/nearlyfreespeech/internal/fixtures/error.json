@@ -1,4 +1,0 @@
-{
-  "error": "The API request could not be authenticated.",
-  "debug": "The X-NFSN-Authentication header is not present."
-}

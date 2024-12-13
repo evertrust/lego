@@ -1,8 +1,0 @@
-{
-  "active": true,
-  "dnssec": true,
-  "master": null,
-  "name": "example.com",
-  "tsig": null,
-  "type": "master"
-}
