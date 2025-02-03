@@ -135,7 +135,7 @@ func GeneratePrivateKey(keyType KeyType) (crypto.PrivateKey, error) {
 	return nil, fmt.Errorf("invalid KeyType: %s", keyType)
 }
 
-func GenerateCSR(privateKey crypto.PrivateKey, domain string, san []string, mustStaple bool) ([]byte, error) {
+func GenerateCSR(privateKey crypto.PrivateKey, domain string, san, c, o, ou []string, mustStaple bool) ([]byte, error) {
 	var dnsNames []string
 	var ipAddresses []net.IP
 	for _, altname := range san {
@@ -147,7 +147,12 @@ func GenerateCSR(privateKey crypto.PrivateKey, domain string, san []string, must
 	}
 
 	template := x509.CertificateRequest{
-		Subject:     pkix.Name{CommonName: domain},
+		Subject: pkix.Name{
+			CommonName:         domain,
+			Country:            c,
+			Organization:       o,
+			OrganizationalUnit: ou,
+		},
 		DNSNames:    dnsNames,
 		IPAddresses: ipAddresses,
 	}

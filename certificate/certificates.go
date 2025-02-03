@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto"
 	"crypto/x509"
+	"crypto/x509/pkix"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -66,6 +67,7 @@ type Resource struct {
 // See https://datatracker.ietf.org/doc/html/rfc8555#section-7.5.2.
 type ObtainRequest struct {
 	Domains    []string
+	Subject    pkix.Name
 	PrivateKey crypto.PrivateKey
 	MustStaple bool
 
@@ -179,7 +181,7 @@ func (c *Certifier) Obtain(request ObtainRequest) (*Resource, error) {
 	log.Infof("[%s] acme: Validations succeeded; requesting certificates", strings.Join(domains, ", "))
 
 	failures := newObtainError()
-	cert, err := c.getForOrder(domains, order, request.Bundle, request.PrivateKey, request.MustStaple, request.PreferredChain)
+	cert, err := c.getForOrder(domains, request.Subject.Country, request.Subject.Organization, request.Subject.OrganizationalUnit, order, request.Bundle, request.PrivateKey, request.MustStaple, request.PreferredChain)
 	if err != nil {
 		for _, auth := range authz {
 			failures.Add(challenge.GetTargetedDomain(auth), err)
@@ -264,7 +266,7 @@ func (c *Certifier) ObtainForCSR(request ObtainForCSRRequest) (*Resource, error)
 	return cert, failures.Join()
 }
 
-func (c *Certifier) getForOrder(domains []string, order acme.ExtendedOrder, bundle bool, privateKey crypto.PrivateKey, mustStaple bool, preferredChain string) (*Resource, error) {
+func (c *Certifier) getForOrder(domains, country, organization, ou []string, order acme.ExtendedOrder, bundle bool, privateKey crypto.PrivateKey, mustStaple bool, preferredChain string) (*Resource, error) {
 	if privateKey == nil {
 		var err error
 		privateKey, err = certcrypto.GeneratePrivateKey(c.options.KeyType)
@@ -297,7 +299,7 @@ func (c *Certifier) getForOrder(domains []string, order acme.ExtendedOrder, bund
 	}
 
 	// TODO: should the CSR be customizable?
-	csr, err := certcrypto.GenerateCSR(privateKey, commonName, san, mustStaple)
+	csr, err := certcrypto.GenerateCSR(privateKey, commonName, san, country, organization, ou, mustStaple)
 	if err != nil {
 		return nil, err
 	}

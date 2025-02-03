@@ -89,7 +89,7 @@ func TestGenerateCSR(t *testing.T) {
 		t.Run(test.desc, func(t *testing.T) {
 			t.Parallel()
 
-			csr, err := GenerateCSR(test.privateKey, test.domain, test.san, test.mustStaple)
+			csr, err := GenerateCSR(test.privateKey, test.domain, nil, nil, nil, test.san, test.mustStaple)
 
 			if test.expected.error {
 				require.Error(t, err)
