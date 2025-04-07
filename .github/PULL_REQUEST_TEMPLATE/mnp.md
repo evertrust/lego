@@ -1,6 +1,6 @@
 PULL REQUEST TEMPLATE FOR MAINTAINERS ONLY.
 
-https://github.com/go-acme/lego/compare/master...ldez:branch?quick_pull=1&title=Add+DNS+provider+for+&labels=enhancement,area/dnsprovider,state/need-user-tests&template=mnp.md
+https://github.com/evertrust/lego/compare/master...ldez:branch?quick_pull=1&title=Add+DNS+provider+for+&labels=enhancement,area/dnsprovider,state/need-user-tests&template=mnp.md
 
 ?quick_pull=1&title=Add+DNS+provider+for+&labels=enhancement,area/dnsprovider,state/need-user-tests&template=mnp.md
 

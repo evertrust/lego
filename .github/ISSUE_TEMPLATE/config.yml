@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: ❓ Questions
-    url: https://github.com/go-acme/lego/discussions
+    url: https://github.com/evertrust/lego/discussions
     about: If you have a question, or are looking for advice, please post on our Discussions section!
   - name: 📖 Documentation
     url: https://go-acme.github.io/lego/

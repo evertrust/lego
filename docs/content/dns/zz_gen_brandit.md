@@ -16,7 +16,7 @@ dnsprovider:
 Brandit has been acquired by Abion.
 Abion has a different API.
 
-If you are a Brandit/Albion user, you can try the PR https://github.com/go-acme/lego/pull/2112.
+If you are a Brandit/Albion user, you can try the PR https://github.com/evertrust/lego/pull/2112.
 
 
 

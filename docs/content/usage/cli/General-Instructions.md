@@ -7,7 +7,7 @@ weight: 1
 ---
 
 These examples assume you have [lego installed]({{% ref "installation" %}}).
-You can get a pre-built binary from the [releases](https://github.com/go-acme/lego/releases) page.
+You can get a pre-built binary from the [releases](https://github.com/evertrust/lego/releases) page.
 
 The web server examples require that the `lego` binary has permission to bind to ports 80 and 443.
 If your environment does not allow you to bind to these ports, please read [Running without root privileges]({{% ref "usage/cli/Options#running-without-root-privileges" %}}) and [Port Usage]({{% ref "usage/cli/Options#port-usage" %}}).

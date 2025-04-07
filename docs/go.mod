@@ -1,4 +1,4 @@
-module github.com/go-acme/lego/docs
+module github.com/evertrust/lego/docs
 
 go 1.20
 

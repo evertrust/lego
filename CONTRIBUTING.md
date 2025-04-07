@@ -42,8 +42,8 @@ First, you have to install [GoLang](https://golang.org/doc/install) and [golangc
 
 ```bash
 # Create the root folder
-mkdir -p $GOPATH/src/github.com/go-acme
-cd $GOPATH/src/github.com/go-acme
+mkdir -p $GOPATH/src/github.com/evertrust
+cd $GOPATH/src/github.com/evertrust
 
 # clone your fork
 git clone git@github.com:YOUR_USERNAME/lego.git

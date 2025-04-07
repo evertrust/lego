@@ -57,17 +57,17 @@ pygmentsUseClasses = true
 [[Languages.en.menu.shortcuts]]
   name = "<i class='fab fa-fw fa-github'></i> GitHub repo"
   identifier = "ds"
-  url = "https://github.com/go-acme/lego"
+  url = "https://github.com/evertrust/lego"
   weight = 10
 
 [[Languages.en.menu.shortcuts]]
   name = "<i class='fas fa-fw fa-bug'></i> Issues"
-  url = "https://github.com/go-acme/lego/issues"
+  url = "https://github.com/evertrust/lego/issues"
   weight = 11
 
 [[Languages.en.menu.shortcuts]]
   name = "<i class='fas fa-fw fa-comments'></i> Discussions"
-  url = "https://github.com/go-acme/lego/discussions"
+  url = "https://github.com/evertrust/lego/discussions"
   weight = 12
 
 [outputs]

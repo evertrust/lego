@@ -109,4 +109,4 @@ RandomizedDelaySec=1h
 WantedBy=timers.target
 ```
 
-[^loadspikes]: See [GitHub issue #1656](https://github.com/go-acme/lego/issues/1656) for an excellent problem description.
+[^loadspikes]: See [GitHub issue #1656](https://github.com/evertrust/lego/issues/1656) for an excellent problem description.

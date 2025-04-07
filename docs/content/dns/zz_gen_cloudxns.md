@@ -6,7 +6,7 @@ slug: cloudxns
 dnsprovider:
   since:    "v0.5.0"
   code:     "cloudxns"
-  url:      "https://github.com/go-acme/lego/issues/2323"
+  url:      "https://github.com/evertrust/lego/issues/2323"
 ---
 
 <!-- THIS DOCUMENTATION IS AUTO-GENERATED. PLEASE DO NOT EDIT. -->
