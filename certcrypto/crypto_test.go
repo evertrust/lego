@@ -5,6 +5,7 @@ import (
 	"crypto"
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/x509/pkix"
 	"encoding/pem"
 	"testing"
 	"time"
@@ -109,6 +110,20 @@ func TestGenerateCSR(t *testing.T) {
 			},
 			expected: expected{len: 421},
 		},
+		{
+			desc:       "with subject",
+			privateKey: privateKey,
+			opts: CSROptions{
+				Domain:         "example.com",
+				SAN:            []string{"example.org"},
+				EmailAddresses: []string{"foo@example.com", "bar@example.com"},
+				Subject: pkix.Name{
+					Country:      []string{"FR"},
+					Organization: []string{"EVERTRUST"},
+				},
+			},
+			expected: expected{len: 454},
+		},
 	}
 
 	for _, test := range testCases {
@@ -122,6 +137,7 @@ func TestGenerateCSR(t *testing.T) {
 			} else {
 				require.NoError(t, err, "Error generating CSR")
 
+				t.Log(string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE REQUEST", Bytes: csr})))
 				assert.NotEmpty(t, csr)
 				assert.Len(t, csr, test.expected.len)
 			}
