@@ -50,10 +50,10 @@ func Printf(format string, args ...any) {
 
 // Warnf writes a log entry.
 func Warnf(format string, args ...any) {
-	Printf("[WARN] "+format, args...)
+	Printf("[WARN]  "+format, args...)
 }
 
 // Infof writes a log entry.
 func Infof(format string, args ...any) {
-	Printf("[INFO] "+format, args...)
+	Printf("[INFO]  "+format, args...)
 }
