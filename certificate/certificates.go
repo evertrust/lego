@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto"
 	"crypto/x509"
+	"crypto/x509/pkix"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -66,6 +67,7 @@ type Resource struct {
 // See https://datatracker.ietf.org/doc/html/rfc8555#section-7.5.2.
 type ObtainRequest struct {
 	Domains        []string
+	Subject        pkix.Name
 	PrivateKey     crypto.PrivateKey
 	MustStaple     bool
 	EmailAddresses []string
@@ -328,6 +330,7 @@ func (c *Certifier) getForOrder(domains []string, order acme.ExtendedOrder, requ
 		SAN:            san,
 		MustStaple:     request.MustStaple,
 		EmailAddresses: request.EmailAddresses,
+		Subject:        request.Subject,
 	}
 
 	csr, err := certcrypto.CreateCSR(privateKey, csrOptions)
