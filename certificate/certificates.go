@@ -50,6 +50,7 @@ type Resource struct {
 	Certificate       []byte `json:"-"`
 	IssuerCertificate []byte `json:"-"`
 	CSR               []byte `json:"-"`
+	Metadata          string `json:"-"`
 }
 
 // ObtainRequest The request to obtain certificate.
@@ -404,7 +405,7 @@ func (c *Certifier) checkResponse(order acme.ExtendedOrder, certRes *Resource, b
 		return valid, err
 	}
 
-	certs, err := c.core.Certificates.GetAll(order.Certificate, bundle)
+	certs, metadata, err := c.core.Certificates.GetAll(order.Certificate, bundle)
 	if err != nil {
 		return false, err
 	}
@@ -414,6 +415,7 @@ func (c *Certifier) checkResponse(order acme.ExtendedOrder, certRes *Resource, b
 	certRes.Certificate = certs[order.Certificate].Cert
 	certRes.CertURL = order.Certificate
 	certRes.CertStableURL = order.Certificate
+	certRes.Metadata = metadata
 
 	if preferredChain == "" {
 		log.Infof("[%s] Server responded with a certificate.", certRes.Domain)
