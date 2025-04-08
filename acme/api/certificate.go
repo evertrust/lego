@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"crypto/x509"
+	"encoding/base64"
 	"encoding/pem"
 	"errors"
 	"io"
@@ -31,10 +32,10 @@ func (c *CertificateService) Get(certURL string, bundle bool) ([]byte, []byte, e
 
 // GetAll the certificates and the alternate certificates.
 // bundle' is only applied if the issuer is provided by the 'up' link.
-func (c *CertificateService) GetAll(certURL string, bundle bool) (map[string]*acme.RawCertificate, error) {
+func (c *CertificateService) GetAll(certURL string, bundle bool) (map[string]*acme.RawCertificate, string, error) {
 	cert, headers, err := c.get(certURL, bundle)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	certs := map[string]*acme.RawCertificate{certURL: cert}
@@ -43,16 +44,25 @@ func (c *CertificateService) GetAll(certURL string, bundle bool) (map[string]*ac
 	// - https://www.rfc-editor.org/rfc/rfc8555.html#section-7.4.2
 	alts := getLinks(headers, "alternate")
 
+	metadata := headers.Get("X-Horizon-Metadata")
+	if metadata != "" {
+		decoded, err := base64.StdEncoding.DecodeString(metadata)
+		if err != nil {
+			return nil, "", errors.New("could not decode X-Horizon-Metadata header: " + err.Error())
+		}
+		metadata = string(decoded)
+	}
+
 	for _, alt := range alts {
 		altCert, _, err := c.get(alt, bundle)
 		if err != nil {
-			return nil, err
+			return nil, "", err
 		}
 
 		certs[alt] = altCert
 	}
 
-	return certs, nil
+	return certs, metadata, nil
 }
 
 // Revoke Revokes a certificate.
