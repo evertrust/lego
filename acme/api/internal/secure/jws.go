@@ -36,15 +36,23 @@ func (j *JWS) SetKid(kid string) {
 // SignContent Signs a content with the JWS.
 func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, error) {
 	var alg jose.SignatureAlgorithm
-	switch k := j.privKey.(type) {
-	case *rsa.PrivateKey:
+	// transform the privKey so signer
+	signer, ok := j.privKey.(crypto.Signer)
+	if !ok {
+		return nil, fmt.Errorf("private key does not implement crypto.Signer")
+	}
+
+	switch k := signer.Public().(type) {
+	case *rsa.PublicKey:
 		alg = jose.RS256
-	case *ecdsa.PrivateKey:
+	case *ecdsa.PublicKey:
 		if k.Curve == elliptic.P256() {
 			alg = jose.ES256
 		} else if k.Curve == elliptic.P384() {
 			alg = jose.ES384
 		}
+	default:
+		return nil, fmt.Errorf("unsupported key type: %T", signer.Public())
 	}
 
 	signKey := jose.SigningKey{
@@ -63,12 +71,12 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 		options.EmbedJWK = true
 	}
 
-	signer, err := jose.NewSigner(signKey, &options)
+	joseSigner, err := jose.NewSigner(signKey, &options)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create jose signer: %w", err)
 	}
 
-	signed, err := signer.Sign(content)
+	signed, err := joseSigner.Sign(content)
 	if err != nil {
 		return nil, fmt.Errorf("failed to sign content: %w", err)
 	}
