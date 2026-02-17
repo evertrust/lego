@@ -71,6 +71,13 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 		options.EmbedJWK = true
 	}
 	switch test := signKey.Key.(type) {
+	case jose.JSONWebKey:
+		fmt.Printf("Signing key is a JSONWebKey with key type: %T\n", test.Key)
+		switch test.Key.(type) {
+		default:
+			fmt.Printf("Unsupported key type in JSONWebKey: %T\n", test.Key)
+		}
+
 	default:
 		fmt.Printf("Unsupported key type: %T\n", test)
 	}
