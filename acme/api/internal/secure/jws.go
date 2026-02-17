@@ -70,14 +70,20 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 	if j.kid == "" {
 		options.EmbedJWK = true
 	}
+	switch test := signKey.Key.(type) {
+	default:
+		fmt.Printf("Unsupported key type: %T\n", test)
+	}
 
 	joseSigner, err := jose.NewSigner(signKey, &options)
 	if err != nil {
+		fmt.Printf("Breaking at creating signer: %v\n", err)
 		return nil, fmt.Errorf("failed to create jose signer: %w", err)
 	}
 
 	signed, err := joseSigner.Sign(content)
 	if err != nil {
+		fmt.Printf("Breaking at signing content: %v\n", err)
 		return nil, fmt.Errorf("failed to sign content: %w", err)
 	}
 	return signed, nil
