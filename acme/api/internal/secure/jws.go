@@ -78,8 +78,6 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 		}
 	}
 
-	fmt.Printf("Determined algorithm: %s\n", alg)
-
 	signKey := jose.SigningKey{
 		Algorithm: alg,
 		Key:       jose.JSONWebKey{Key: j.privKey, KeyID: j.kid},
@@ -98,13 +96,11 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 
 	joseSigner, err := jose.NewSigner(signKey, &options)
 	if err != nil {
-		fmt.Printf("Breaking at creating signer: %v\n", err)
 		return nil, fmt.Errorf("failed to create jose signer: %w", err)
 	}
 
 	signed, err := joseSigner.Sign(content)
 	if err != nil {
-		fmt.Printf("Breaking at signing content: %v\n", err)
 		return nil, fmt.Errorf("failed to sign content: %w", err)
 	}
 	return signed, nil
