@@ -33,26 +33,6 @@ func (j *JWS) SetKid(kid string) {
 	j.kid = kid
 }
 
-func determineAlgorithm(privKey crypto.PrivateKey) (jose.SignatureAlgorithm, error) {
-	switch k := privKey.(type) {
-	case *rsa.PrivateKey:
-		return jose.RS256, nil
-	case *ecdsa.PrivateKey:
-		switch k.Curve {
-		case elliptic.P256():
-			return jose.ES256, nil
-		case elliptic.P384():
-			return jose.ES384, nil
-		default:
-			return "", fmt.Errorf("unsupported elliptic curve: %v", k.Curve.Params().Name)
-		}
-	case jose.OpaqueSigner:
-		return determineAlgorithm(k.Public().Key)
-	default:
-		return "", fmt.Errorf("unsupported private key type: %T", privKey)
-	}
-}
-
 func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, error) {
 	var alg jose.SignatureAlgorithm
 	switch k := j.privKey.(type) {
