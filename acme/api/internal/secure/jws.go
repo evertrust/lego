@@ -76,6 +76,8 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 				alg = jose.ES384
 			}
 		}
+	default:
+		fmt.Printf("Unsupported private key type: %T\n", j.privKey)
 	}
 
 	signKey := jose.SigningKey{
