@@ -66,7 +66,6 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 		}
 		// Support windows signer
 	case jose.OpaqueSigner:
-		fmt.Printf("Private key is an OpaqueSigner with public key type: %T\n", k.Public().Key)
 		switch pk := k.Public().Key.(type) {
 		case *rsa.PublicKey:
 			alg = jose.RS256
@@ -77,9 +76,9 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 				alg = jose.ES384
 			}
 		}
-	default:
-		fmt.Printf("Unsupported private key type: %T\n", j.privKey)
 	}
+
+	fmt.Printf("Determined algorithm: %s\n", alg)
 
 	signKey := jose.SigningKey{
 		Algorithm: alg,
@@ -95,17 +94,6 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 
 	if j.kid == "" {
 		options.EmbedJWK = true
-	}
-	switch test := signKey.Key.(type) {
-	case jose.JSONWebKey:
-		fmt.Printf("Signing key is a JSONWebKey with key type: %T\n", test.Key)
-		switch test.Key.(type) {
-		default:
-			fmt.Printf("Unsupported key type in JSONWebKey: %T\n", test.Key)
-		}
-
-	default:
-		fmt.Printf("Unsupported key type: %T\n", test)
 	}
 
 	joseSigner, err := jose.NewSigner(signKey, &options)
