@@ -66,6 +66,7 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 		}
 		// Support windows signer
 	case jose.OpaqueSigner:
+		fmt.Printf("Private key is an OpaqueSigner with public key type: %T\n", k.Public().Key)
 		switch pk := k.Public().Key.(type) {
 		case *rsa.PublicKey:
 			alg = jose.RS256
