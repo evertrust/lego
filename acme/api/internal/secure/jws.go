@@ -74,12 +74,12 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 		options.EmbedJWK = true
 	}
 
-	joseSigner, err := jose.NewSigner(signKey, &options)
+	signer, err := jose.NewSigner(signKey, &options)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create jose signer: %w", err)
 	}
 
-	signed, err := joseSigner.Sign(content)
+	signed, err := signer.Sign(content)
 	if err != nil {
 		return nil, fmt.Errorf("failed to sign content: %w", err)
 	}
