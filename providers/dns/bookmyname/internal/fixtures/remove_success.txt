@@ -1,1 +1,0 @@
-good: remove done 1, cid 123, domain id 456, ttl 300, type txt, ip xxx

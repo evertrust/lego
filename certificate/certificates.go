@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto"
 	"crypto/x509"
+	"crypto/x509/pkix"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -12,12 +13,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-acme/lego/v4/acme"
-	"github.com/go-acme/lego/v4/acme/api"
-	"github.com/go-acme/lego/v4/certcrypto"
-	"github.com/go-acme/lego/v4/challenge"
-	"github.com/go-acme/lego/v4/log"
-	"github.com/go-acme/lego/v4/platform/wait"
+	"github.com/evertrust/lego/v4/acme"
+	"github.com/evertrust/lego/v4/acme/api"
+	"github.com/evertrust/lego/v4/certcrypto"
+	"github.com/evertrust/lego/v4/challenge"
+	"github.com/evertrust/lego/v4/log"
+	"github.com/evertrust/lego/v4/platform/wait"
 	"golang.org/x/crypto/ocsp"
 	"golang.org/x/net/idna"
 )
@@ -49,6 +50,7 @@ type Resource struct {
 	Certificate       []byte `json:"-"`
 	IssuerCertificate []byte `json:"-"`
 	CSR               []byte `json:"-"`
+	Metadata          string `json:"-"`
 }
 
 // ObtainRequest The request to obtain certificate.
@@ -66,6 +68,7 @@ type Resource struct {
 // See https://datatracker.ietf.org/doc/html/rfc8555#section-7.5.2.
 type ObtainRequest struct {
 	Domains        []string
+	Subject        pkix.Name
 	PrivateKey     crypto.PrivateKey
 	MustStaple     bool
 	EmailAddresses []string
@@ -331,6 +334,7 @@ func (c *Certifier) getForOrder(domains []string, order acme.ExtendedOrder, requ
 		SAN:            san,
 		MustStaple:     request.MustStaple,
 		EmailAddresses: request.EmailAddresses,
+		Subject:        request.Subject,
 	}
 
 	csr, err := certcrypto.CreateCSR(privateKey, csrOptions)
@@ -401,7 +405,7 @@ func (c *Certifier) checkResponse(order acme.ExtendedOrder, certRes *Resource, b
 		return valid, err
 	}
 
-	certs, err := c.core.Certificates.GetAll(order.Certificate, bundle)
+	certs, metadata, err := c.core.Certificates.GetAll(order.Certificate, bundle)
 	if err != nil {
 		return false, err
 	}
@@ -411,6 +415,7 @@ func (c *Certifier) checkResponse(order acme.ExtendedOrder, certRes *Resource, b
 	certRes.Certificate = certs[order.Certificate].Cert
 	certRes.CertURL = order.Certificate
 	certRes.CertStableURL = order.Certificate
+	certRes.Metadata = metadata
 
 	if preferredChain == "" {
 		log.Infof("[%s] Server responded with a certificate.", certRes.Domain)

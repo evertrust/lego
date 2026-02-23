@@ -67,7 +67,7 @@ release:
     
     So if you think that lego is worth it, please consider [donating](https://donate.ldez.dev).
     
-    For key updates, see the [changelog](https://github.com/go-acme/lego/blob/HEAD/CHANGELOG.md#v{{ .Major }}{{ .Minor }}{{ .Patch }}).
+    For key updates, see the [changelog](https://github.com/evertrust/lego/blob/HEAD/CHANGELOG.md#v{{ .Major }}{{ .Minor }}{{ .Patch }}).
 
 archives:
   - id: lego

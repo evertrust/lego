@@ -1,9 +1,0 @@
-{
-  "action": "infoDnsRecords",
-  "param": {
-    "domainname": "example.com",
-    "customernumber": "a",
-    "apikey": "b",
-    "apisessionid": ""
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "method": "remove-record",
-  "params": {
-    "id": "123",
-    "domain": "example.com"
-  }
-}
