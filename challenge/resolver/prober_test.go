@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/go-acme/lego/v4/acme"
-	"github.com/go-acme/lego/v4/challenge"
+	"github.com/evertrust/lego/v4/acme"
+	"github.com/evertrust/lego/v4/challenge"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

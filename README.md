@@ -7,7 +7,7 @@
 
 [ACME](https://www.rfc-editor.org/rfc/rfc8555.html) client and library for Let's Encrypt and other ACME CAs written in Go.
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/go-acme/lego/v4.svg)](https://pkg.go.dev/github.com/go-acme/lego/v4)
+[![Go Reference](https://pkg.go.dev/badge/github.com/evertrust/lego/v4.svg)](https://pkg.go.dev/github.com/evertrust/lego/v4)
 [![Build Status](https://github.com//go-acme/lego/workflows/Main/badge.svg?branch=master)](https://github.com//go-acme/lego/actions)
 [![Docker Pulls](https://img.shields.io/docker/pulls/goacme/lego.svg)](https://hub.docker.com/r/goacme/lego/)
 
@@ -56,7 +56,7 @@ Documentation is hosted live at https://go-acme.github.io/lego/.
 
 Detailed documentation is available [here](https://go-acme.github.io/lego/dns).
 
-If your DNS provider is not supported, please open an [issue](https://github.com/go-acme/lego/issues/new?assignees=&labels=enhancement%2C+new-provider&template=new_dns_provider.yml).
+If your DNS provider is not supported, please open an [issue](https://github.com/evertrust/lego/issues/new?assignees=&labels=enhancement%2C+new-provider&template=new_dns_provider.yml).
 
 <!-- START DNS PROVIDERS LIST -->
 
@@ -299,4 +299,4 @@ If your DNS provider is not supported, please open an [issue](https://github.com
 
 <!-- END DNS PROVIDERS LIST -->
 
-If your DNS provider is not supported, please open an [issue](https://github.com/go-acme/lego/issues/new?assignees=&labels=enhancement%2C+new-provider&template=new_dns_provider.yml).
+If your DNS provider is not supported, please open an [issue](https://github.com/evertrust/lego/issues/new?assignees=&labels=enhancement%2C+new-provider&template=new_dns_provider.yml).
