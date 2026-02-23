@@ -170,6 +170,8 @@ func CreateCSR(privateKey crypto.PrivateKey, opts CSROptions) ([]byte, error) {
 	}
 	opts.Subject.CommonName = opts.Domain
 
+	opts.Subject.CommonName = opts.Domain
+
 	template := x509.CertificateRequest{
 		Subject:        opts.Subject,
 		DNSNames:       dnsNames,

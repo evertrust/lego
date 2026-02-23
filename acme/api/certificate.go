@@ -47,6 +47,7 @@ func (c *CertificateService) GetAll(certURL string, bundle bool) (map[string]*ac
 		if err != nil {
 			return nil, "", errors.New("could not decode X-Horizon-Metadata header: " + err.Error())
 		}
+
 		metadata = string(decoded)
 	}
 
