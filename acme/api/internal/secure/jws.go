@@ -45,7 +45,7 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 		} else if k.Curve == elliptic.P384() {
 			alg = jose.ES384
 		}
-		// Support windows signer
+	// EVT: Support windows signer
 	case jose.OpaqueSigner:
 		switch pk := k.Public().Key.(type) {
 		case *rsa.PublicKey:
