@@ -34,6 +34,8 @@ func (j *JWS) SetKid(kid string) {
 }
 
 // SignContent Signs a content with the JWS.
+//
+//nolint:gocyclo
 func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, error) {
 	var alg jose.SignatureAlgorithm
 
@@ -45,6 +47,18 @@ func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, e
 			alg = jose.ES256
 		} else if k.Curve == elliptic.P384() {
 			alg = jose.ES384
+		}
+	// EVT: Support windows signer
+	case jose.OpaqueSigner:
+		switch pk := k.Public().Key.(type) {
+		case *rsa.PublicKey:
+			alg = jose.RS256
+		case *ecdsa.PublicKey:
+			if pk.Curve == elliptic.P256() {
+				alg = jose.ES256
+			} else if pk.Curve == elliptic.P384() {
+				alg = jose.ES384
+			}
 		}
 	}
 
