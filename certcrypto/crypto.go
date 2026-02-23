@@ -168,7 +168,6 @@ func CreateCSR(privateKey crypto.PrivateKey, opts CSROptions) ([]byte, error) {
 			dnsNames = append(dnsNames, altname)
 		}
 	}
-	opts.Subject.CommonName = opts.Domain
 
 	opts.Subject.CommonName = opts.Domain
 
