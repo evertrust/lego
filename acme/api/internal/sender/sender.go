@@ -27,7 +27,8 @@ type Doer struct {
 
 // NewDoer Creates a new Doer.
 func NewDoer(client *http.Client, userAgent string) *Doer {
-	client.Transport = newHTTPSOnly(client)
+	// EVT: disable HTTPS only to ensure no compatibility issues
+	// client.Transport = newHTTPSOnly(client)
 
 	return &Doer{
 		httpClient: client,
