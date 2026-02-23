@@ -34,6 +34,8 @@ func (j *JWS) SetKid(kid string) {
 }
 
 // SignContent Signs a content with the JWS.
+//
+//nolint:cyclo
 func (j *JWS) SignContent(url string, content []byte) (*jose.JSONWebSignature, error) {
 	var alg jose.SignatureAlgorithm
 
