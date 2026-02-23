@@ -56,11 +56,3 @@ jobs:
         run: |
           make
           make clean
-
-      - name: Install Hugo
-        run: |
-          wget -O /tmp/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-amd64.deb
-          sudo dpkg -i /tmp/hugo.deb
-
-      - name: Build Documentation
-        run: make docs-build

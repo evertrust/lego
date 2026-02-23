@@ -7,7 +7,7 @@ import (
 	"slices"
 	"time"
 
-	"github.com/go-acme/lego/v4/acme"
+	"github.com/evertrust/lego/v4/acme"
 )
 
 // OrderOptions used to create an order (optional).

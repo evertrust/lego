@@ -2,14 +2,13 @@ package api
 
 import (
 	"bytes"
-	"crypto/x509"
 	"encoding/base64"
 	"encoding/pem"
 	"errors"
 	"io"
 	"net/http"
 
-	"github.com/go-acme/lego/v4/acme"
+	"github.com/evertrust/lego/v4/acme"
 )
 
 // maxBodySize is the maximum size of body that we will read.

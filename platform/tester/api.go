@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"github.com/go-acme/lego/v4/acme"
-	"github.com/go-acme/lego/v4/platform/tester/servermock"
+	"github.com/evertrust/lego/v4/acme"
+	"github.com/evertrust/lego/v4/platform/tester/servermock"
 )
 
 // MockACMEServer Minimal stub ACME server for validation.
