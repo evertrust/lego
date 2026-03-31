@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509/pkix"
+	"encoding/asn1"
 	"encoding/pem"
 	"testing"
 	"time"
@@ -31,6 +32,20 @@ func TestGeneratePrivateKey(t *testing.T) {
 func TestGenerateCSR(t *testing.T) {
 	privateKey, err := rsa.GenerateKey(rand.Reader, 1024)
 	require.NoError(t, err, "Error generating private key")
+
+	var rdns pkix.RDNSequence
+
+	rdns = append(rdns, pkix.RDNSequence{
+		{{Type: []int{2, 5, 4, 3}, Value: "example.com"}},
+	}...)
+	rdns = append(rdns, pkix.RDNSequence{
+		{{Type: []int{2, 5, 4, 6}, Value: "FR"}},
+	}...)
+	rdns = append(rdns, pkix.RDNSequence{
+		{{Type: []int{2, 5, 4, 10}, Value: "EVERTRUST"}},
+	}...)
+	rawSubject, err := asn1.Marshal(rdns)
+	require.NoError(t, err, "Error marshaling raw subject")
 
 	type expected struct {
 		len   int
@@ -121,6 +136,17 @@ func TestGenerateCSR(t *testing.T) {
 					Country:      []string{"FR"},
 					Organization: []string{"EVERTRUST"},
 				},
+			},
+			expected: expected{len: 454},
+		},
+		{
+			desc:       "with raw subject",
+			privateKey: privateKey,
+			opts: CSROptions{
+				Domain:         "example.com",
+				SAN:            []string{"example.org"},
+				EmailAddresses: []string{"foo@example.com", "bar@example.com"},
+				RawSubject:     rawSubject,
 			},
 			expected: expected{len: 454},
 		},

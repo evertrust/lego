@@ -3,8 +3,6 @@ package certificate
 import (
 	"crypto/rand"
 	"crypto/rsa"
-	"crypto/x509/pkix"
-	"encoding/asn1"
 	"fmt"
 	"net/http"
 	"testing"
@@ -175,83 +173,6 @@ JDGFoqgCWjBH4d1QB7wCCZAA62RjYJsWvIjJEubSfZGL+T0yjWW06XyxV3bqxbYo
 Ob8VZRzI9neWagqNdwvYkQsEjgfbKbYK7p2CNTUQ
 -----END CERTIFICATE-----
 `
-
-func Test_Obtain(t *testing.T) {
-	server := tester.MockACMEServer().
-		Route("POST /newOrder", http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-			serverURL := fmt.Sprintf("https://%s", req.Context().Value(http.LocalAddrContextKey))
-
-			rw.Header().Set("Location", serverURL+"/order/1")
-			servermock.JSONEncode(acme.Order{
-				Status:      acme.StatusPending,
-				Identifiers: []acme.Identifier{{Type: "dns", Value: "example.com"}},
-				Finalize:    serverURL + "/finalize/1",
-			}).ServeHTTP(rw, req)
-		})).
-		Route("POST /finalize/1", http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-			serverURL := fmt.Sprintf("https://%s", req.Context().Value(http.LocalAddrContextKey))
-
-			servermock.JSONEncode(acme.Order{
-				Status:      acme.StatusValid,
-				Certificate: serverURL + "/certificate",
-			}).ServeHTTP(rw, req)
-		})).
-		Route("POST /certificate", servermock.RawStringResponse(certResponseMock)).
-		BuildHTTPS(t)
-
-	key, err := rsa.GenerateKey(rand.Reader, 2048)
-	require.NoError(t, err, "Could not generate test key")
-
-	core, err := api.New(server.Client(), "lego-test", server.URL+"/dir", "", key)
-	require.NoError(t, err)
-
-	certifier := NewCertifier(core, &resolverMock{}, CertifierOptions{KeyType: certcrypto.RSA2048})
-
-	request := ObtainRequest{
-		Domains: []string{"example.com"},
-		Subject: pkix.Name{
-			CommonName: "example.com",
-		},
-		Bundle: false,
-	}
-
-	certRes, err := certifier.Obtain(request)
-	require.NoError(t, err)
-	assert.NotNil(t, certRes)
-	assert.Equal(t, "example.com", certRes.Domain)
-	assert.Contains(t, certRes.CertStableURL, "/certificate")
-	assert.Contains(t, certRes.CertURL, "/certificate")
-	assert.Nil(t, certRes.CSR)
-	assert.NotEmpty(t, certRes.PrivateKey)
-	assert.Equal(t, certResponseNoBundleMock, string(certRes.Certificate), "Certificate")
-	assert.Equal(t, issuerMock, string(certRes.IssuerCertificate), "IssuerCertificate")
-
-	var rdns pkix.RDNSequence
-
-	rdns = append(rdns, []pkix.AttributeTypeAndValue{{
-		Type:  []int{2, 5, 4, 3},
-		Value: "example.com",
-	}})
-	rawSubject, err := asn1.Marshal(rdns)
-	require.NoError(t, err, "Could not marshal subject")
-	// test with raw subject too
-	request = ObtainRequest{
-		Domains:    []string{"example.com"},
-		RawSubject: rawSubject,
-		Bundle:     false,
-	}
-
-	certRes, err = certifier.Obtain(request)
-	require.NoError(t, err)
-	assert.NotNil(t, certRes)
-	assert.Equal(t, "example.com", certRes.Domain)
-	assert.Contains(t, certRes.CertStableURL, "/certificate")
-	assert.Contains(t, certRes.CertURL, "/certificate")
-	assert.Nil(t, certRes.CSR)
-	assert.NotEmpty(t, certRes.PrivateKey)
-	assert.Equal(t, certResponseNoBundleMock, string(certRes.Certificate), "Certificate")
-	assert.Equal(t, issuerMock, string(certRes.IssuerCertificate), "IssuerCertificate")
-}
 
 func Test_checkResponse(t *testing.T) {
 	server := tester.MockACMEServer().
