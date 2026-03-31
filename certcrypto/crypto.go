@@ -171,28 +171,7 @@ func CreateCSR(privateKey crypto.PrivateKey, opts CSROptions) ([]byte, error) {
 	}
 
 	var template x509.CertificateRequest
-
 	if len(opts.RawSubject) > 0 {
-		// unmarshal the raw subject into a rdn sequence, to ensure that the subject is still in order and add the cn
-		var rdnSequence pkix.RDNSequence
-		
-		_, err := asn1.Unmarshal(opts.RawSubject, &rdnSequence)
-		if err != nil {
-			return nil, fmt.Errorf("failed to unmarshal raw subject: %w", err)
-		}
-		// add the common name as the last rdn, to ensure that it is in the right order
-		if opts.Domain != "" {
-			opts.RawSubject, err = asn1.Marshal(append(
-				pkix.RDNSequence{
-					{{Type: []int{2, 5, 4, 3}, Value: opts.Domain}},
-				},
-				rdnSequence...,
-			))
-			if err != nil {
-				return nil, fmt.Errorf("failed to marshal raw subject with common name: %w", err)
-			}
-		}
-
 		template = x509.CertificateRequest{
 			RawSubject:     opts.RawSubject,
 			DNSNames:       dnsNames,
