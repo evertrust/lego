@@ -169,10 +169,20 @@ func CreateCSR(privateKey crypto.PrivateKey, opts CSROptions) ([]byte, error) {
 			dnsNames = append(dnsNames, altname)
 		}
 	}
-
 	opts.Subject.CommonName = opts.Domain
 	var template x509.CertificateRequest
 	if len(opts.RawSubject) > 0 {
+		// add the CommonName to the raw subject
+		if opts.Subject.CommonName != "" {
+			commonNameRDN := pkix.RelativeDistinguishedNameSET{
+				{Type: asn1.ObjectIdentifier{2, 5, 4, 3}, Value: opts.Subject.CommonName},
+			}
+			rawSubjectWithCN, err := asn1.Marshal([]pkix.RelativeDistinguishedNameSET{commonNameRDN})
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal CommonName into raw subject: %w", err)
+			}
+			opts.RawSubject = append(opts.RawSubject, rawSubjectWithCN...)
+		}
 		template = x509.CertificateRequest{
 			RawSubject:     opts.RawSubject,
 			DNSNames:       dnsNames,
