@@ -171,9 +171,11 @@ func CreateCSR(privateKey crypto.PrivateKey, opts CSROptions) ([]byte, error) {
 	}
 
 	var template x509.CertificateRequest
+
 	if len(opts.RawSubject) > 0 {
 		// unmarshal the raw subject into a rdn sequence, to ensure that the subject is still in order and add the cn
 		var rdnSequence pkix.RDNSequence
+		
 		_, err := asn1.Unmarshal(opts.RawSubject, &rdnSequence)
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal raw subject: %w", err)
