@@ -69,6 +69,7 @@ type Resource struct {
 type ObtainRequest struct {
 	Domains        []string
 	Subject        pkix.Name
+	RawSubject     []byte
 	PrivateKey     crypto.PrivateKey
 	MustStaple     bool
 	EmailAddresses []string
@@ -335,6 +336,7 @@ func (c *Certifier) getForOrder(domains []string, order acme.ExtendedOrder, requ
 		MustStaple:     request.MustStaple,
 		EmailAddresses: request.EmailAddresses,
 		Subject:        request.Subject,
+		RawSubject:     request.RawSubject,
 	}
 
 	csr, err := certcrypto.CreateCSR(privateKey, csrOptions)
