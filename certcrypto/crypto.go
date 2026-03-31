@@ -153,6 +153,7 @@ type CSROptions struct {
 	MustStaple     bool
 	EmailAddresses []string
 	Subject        pkix.Name
+	RawSubject     []byte
 }
 
 func CreateCSR(privateKey crypto.PrivateKey, opts CSROptions) ([]byte, error) {
@@ -169,13 +170,22 @@ func CreateCSR(privateKey crypto.PrivateKey, opts CSROptions) ([]byte, error) {
 		}
 	}
 
-	opts.Subject.CommonName = opts.Domain
-
-	template := x509.CertificateRequest{
-		Subject:        opts.Subject,
-		DNSNames:       dnsNames,
-		EmailAddresses: opts.EmailAddresses,
-		IPAddresses:    ipAddresses,
+	var template x509.CertificateRequest
+	if len(opts.RawSubject) > 0 {
+		template = x509.CertificateRequest{
+			RawSubject:     opts.RawSubject,
+			DNSNames:       dnsNames,
+			EmailAddresses: opts.EmailAddresses,
+			IPAddresses:    ipAddresses,
+		}
+	} else {
+		opts.Subject.CommonName = opts.Domain
+		template = x509.CertificateRequest{
+			Subject:        opts.Subject,
+			DNSNames:       dnsNames,
+			EmailAddresses: opts.EmailAddresses,
+			IPAddresses:    ipAddresses,
+		}
 	}
 
 	if opts.MustStaple {
