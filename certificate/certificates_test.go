@@ -227,6 +227,7 @@ func Test_Obtain(t *testing.T) {
 	assert.Equal(t, issuerMock, string(certRes.IssuerCertificate), "IssuerCertificate")
 
 	var rdns pkix.RDNSequence
+
 	rdns = append(rdns, []pkix.AttributeTypeAndValue{{
 		Type:  []int{2, 5, 4, 3},
 		Value: "example.com",
